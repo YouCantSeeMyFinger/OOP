@@ -2,38 +2,35 @@ package com.example.practice;
 
 import com.example.practice.ant.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @SpringBootApplication
 public class PracticeApplication {
 
     public static void main(String[] args) {
-        Ant generalAnt = new GeneralAnt(5);
-        Ant soldierAnt = new SoldierAnt(3);
-        Ant workingAnt = new WorkingAnt(1);
 
-        AttackedInsect vixen = new Vixen(41);
+        List<FightingAnt> attackAnt = List.of(
+                new GeneralAnt(5, "장군개미")
+                , new SoldierAnt(3, "병정개미")
+                , new WorkingAnt(1, "일꾼개미")
+        );
 
-        while (vixen.currentHp() != 0) {
-            if (generalAnt.canAttack(vixen)) {
-                log.info("GeneralAnt can Hit {} times", generalAnt.calculateMaxHits(vixen));
-                vixen.attacked(generalAnt);
-                log.info("Attacked Insect CurrentHp => {}", vixen.currentHp());
-            } else if (soldierAnt.canAttack(vixen)) {
-                log.info("soldierAnt can Hit {} times", soldierAnt.calculateMaxHits(vixen));
-                vixen.attacked(soldierAnt);
-                log.info("Attacked Insect CurrentHp => {}", vixen.currentHp());
-            } else if (workingAnt.canAttack(vixen)) {
-                log.info("workingAnt can Hit {} times", workingAnt.calculateMaxHits(vixen));
-                vixen.attacked(workingAnt);
-                log.info("Attacked Insect CurrentHp => {}", vixen.currentHp());
-            } else {
-                break;
-            }
+        List<AttackedInsect> attackedInsects = List.of(new Vixen(124, "여치"));
+
+        for (AttackedInsect attackedInsect : attackedInsects) {
+            for (FightingAnt fightingAnt : attackAnt) {
+                if (fightingAnt.canAttack(attackedInsect) && attackedInsect != null) {
+                    int attackTimes = fightingAnt.calculateMaxHits(attackedInsect);
+                    log.info("{}가 {}번 공격", fightingAnt.getName(), attackTimes);
+                    attackedInsect.attacked(fightingAnt, attackedInsect, attackTimes);
+                } else {
+                    return;// End if
+                }
+            } // End for
         } // End While
     } // End Main
 } // End Class
