@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 문제
+ * 문제 (배수 문제)
  * 인자 A B C  3개를 받아 A부터 B사이에 있는 C의 배수의 합을 구하는 함수를 만들어라.
  * EX ) 3의 배수
  */
